@@ -1,0 +1,15 @@
+body {
+  min-height: 100vh;
+}
+
+.login-form {
+  height: 300px;
+  width: 300px;
+  margin-top: 50vh;
+
+  transform: translateY(-80%);
+}
+
+.logo {
+  margin-left: 14%;
+}
