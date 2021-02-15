@@ -50,7 +50,7 @@ function Login() {
               type="text"
               className="form-control"
               id="inputLogin"
-              placeholder="informe o nome do repertório"
+              placeholder="informe o Login"
               onChange={(e) => setLogin(e.target.value)}
             />
           </div>

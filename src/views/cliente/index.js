@@ -20,7 +20,7 @@ function Cliente() {
     setTimeout(() => {
       setClientes(results);
       setLoading(false);
-    }, 1000);
+    }, 300);
   }
 
   async function buscarPeloId(idCliente) {

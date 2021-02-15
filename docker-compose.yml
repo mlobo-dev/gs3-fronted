@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  react:
+    build:
+      context: ''
+    image: suprab-web-admin
+    env_file:
+      - './.env'
+    ports:
+      - 5000:3000
