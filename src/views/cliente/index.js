@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Container from '../../components/card';
 import Navbar from '../../components/navbar';
 import { mensagemSucesso } from '../../components/toastr/toastr';
 import * as clienteService from '../../services/clienteService';
+import * as masks from '../../utils/masks';
+import { useSelector } from 'react-redux';
 import './cliente.css';
 
 function Cliente() {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [clienteDeletar, setClienteDeletar] = useState();
+  const perfil = useSelector((state) => state.perfil);
 
   async function listarClientes() {
     setLoading(true);
@@ -56,27 +59,30 @@ function Cliente() {
                     {cliente.id}
                   </th>
                   <td>{cliente.nome}</td>
-                  <td>{cliente.cpf}</td>
+                  <td>{masks.cpf(cliente.cpf)}</td>
                   <td>{cliente.endereco.cidade}</td>
                   <td>{cliente.endereco.uf}</td>
                   <td className="action-itens">
-                    <Link to={`musicas/cadastro/${cliente.id}`}>
-                      <i className="fas fa-pencil-alt"></i>
-                    </Link>
-
-                    <Link>
+                    <Link to={`clientes/cadastro/${cliente.id}`}>
                       <i className="fas fa-eye"></i>
                     </Link>
 
-                    <Link>
-                      <i
-                        id={cliente.id}
-                        onClick={(e) => buscarPeloId(e.target.id)}
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        className="fas fa-trash"
-                      ></i>
-                    </Link>
+                    {perfil === 'ADMINISTRADOR' && (
+                      <>
+                        <Link to={`clientes/cadastro/${cliente.id}`}>
+                          <i className="fas fa-pencil-alt"></i>
+                        </Link>
+                        <Link>
+                          <i
+                            id={cliente.id}
+                            onClick={(e) => buscarPeloId(e.target.id)}
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            className="fas fa-trash"
+                          ></i>
+                        </Link>
+                      </>
+                    )}
                   </td>
                 </tr>
               </>
@@ -118,11 +124,12 @@ function Cliente() {
   }
   return (
     <>
+      {!useSelector((state) => state.usuarioLogado) && <Redirect to="/login" />}
       <Navbar />
 
       <Container
         title="Clientes"
-        menu={menuContainer()}
+        menu={perfil === 'ADMINISTRADOR' && menuContainer()}
         content={tabelaMusica()}
       />
 

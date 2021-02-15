@@ -3,10 +3,10 @@
   justify-content: space-between;
 }
 
-.btn-add-email {
+.btn-add {
   margin-bottom: 3%;
 }
 
-.email-group-itens {
+.group-itens {
   display: flex;
 }

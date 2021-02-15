@@ -10,7 +10,7 @@
 }
 
 .action-itens a:hover {
-  color: #f83036;
+  color: #0069d9;
 }
 
 .loading {
@@ -24,5 +24,5 @@
 }
 
 .btn-cadastro:hover {
-  background-color: #f83036;
+  background-color: #0069d9;
 }

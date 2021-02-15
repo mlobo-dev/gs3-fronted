@@ -14,6 +14,7 @@ function Router() {
       <Route exact path="/login" component={Login} />
       <Route exact path="/clientes" component={Cliente} />
       <Route exact path="/clientes/cadastro" component={ClienteCadastro} />
+      <Route exact path="/clientes/cadastro/:id" component={ClienteCadastro} />
     </BrowserRouter>
   );
 }
