@@ -84,13 +84,20 @@ function CadastroCliente(props) {
       api
         .post('/clientes', cliente)
 
-        .then((response) => {
-          debugger;
+        .then(() => {
           messages.mensagemSucesso('salvo com sucesso!');
           setRedirecionar(true);
         })
         .catch((error) => {
-          debugger;
+          if (error.response.status === 422) {
+            const errors = error.response.data.errors.map(
+              (erro) => erro.message
+            );
+            errors.forEach((erro) => {
+              messages.mensagemErro(erro);
+            });
+            return;
+          }
           messages.mensagemErro(error);
         });
     }
@@ -101,9 +108,19 @@ function CadastroCliente(props) {
     console.table(emails);
   }
 
-  function handleChangeEmail(email, value) {
-    email.enderecoEmail = value;
-    setEmails([...emails.filter((e) => e !== email), email]);
+  function handleChangeEmail(value, index, email) {
+    let listEmails = emails.map((e, i) => {
+      if (i === index) {
+        return {
+          id: email.id ? email.id : null,
+          enderecoEmail: value,
+        };
+      }
+      return e;
+    });
+
+    setEmails(listEmails);
+    console.table(listEmails);
   }
 
   function removeEmail(email) {
@@ -113,15 +130,34 @@ function CadastroCliente(props) {
     setTelefones([...telefones, { numeroTelefone: '', tipo: '' }]);
   }
 
-  function handleChangeTelefone(telefone, value, tipo) {
+  function handleChangeTelefone(telefone, value, index, tipo) {
+    let listTelefones = [];
     if (tipo) {
-      telefone.tipo = value;
-      setTelefones([...telefones.filter((e) => e !== telefone), telefone]);
-      console.table(telefones);
-      return;
+      listTelefones = telefones.map((e, i) => {
+        if (i === index) {
+          debugger;
+          return {
+            id: telefone.id ? telefone.id : null,
+            numeroTelefone: telefone.numeroTelefone,
+            tipo: value,
+          };
+        }
+        return e;
+      });
+    } else {
+      listTelefones = telefones.map((e, i) => {
+        if (i === index) {
+          return {
+            id: telefone.id ? telefone.id : null,
+            numeroTelefone: value,
+            tipo: telefone.tipo,
+          };
+        }
+        return e;
+      });
     }
-    telefone.numeroTelefone = value;
-    setTelefones([...telefones.filter((e) => e !== telefone), telefone]);
+
+    setTelefones(listTelefones);
   }
 
   function removeTelefone(telefone) {
@@ -138,7 +174,6 @@ function CadastroCliente(props) {
       );
 
       if (endereco && !endereco.uf) {
-        debugger;
         messages.mensagemErro('CEP Inválido');
         setLoading(false);
         return;
@@ -168,7 +203,9 @@ function CadastroCliente(props) {
                     value={email.enderecoEmail}
                     id={index}
                     placeholder="Endereço de email"
-                    onChange={(e) => handleChangeEmail(email, e.target.value)}
+                    onChange={(e) =>
+                      handleChangeEmail(e.target.value, index, email)
+                    }
                   />
                   {index > 0 && (
                     <button
@@ -202,26 +239,6 @@ function CadastroCliente(props) {
           {telefones.map((telefone, index) => {
             return (
               <>
-                <div className="form-group col-md-3 col-sm-12 ">
-                  <label htmlFor={index}>{`Telefone ${
-                    index === 0 ? '*' : ''
-                  }`}</label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={telefone.numeroTelefone}
-                    maxLength={telefone.tipo === 'RESIDENCIAL' ? 14 : 15}
-                    id={index}
-                    placeholder="Numero do telefone"
-                    onChange={(e) =>
-                      handleChangeTelefone(
-                        telefone,
-                        masks.cellphone(e.target.value)
-                      )
-                    }
-                  />
-                </div>
                 <div className="form-group col-md-3 col-sm-12">
                   <label htmlFor={index}>Tipo</label>
                   <div className="group-itens">
@@ -229,7 +246,12 @@ function CadastroCliente(props) {
                       className="form-control"
                       value={telefone.tipo}
                       onChange={(e) =>
-                        handleChangeTelefone(telefone, e.target.value, 'tipo')
+                        handleChangeTelefone(
+                          telefone,
+                          e.target.value,
+                          index,
+                          'tipo'
+                        )
                       }
                     >
                       <option selected>Selecione...</option>
@@ -237,6 +259,30 @@ function CadastroCliente(props) {
                       <option value="RESIDENCIAL">Residencial</option>
                       <option value="CELULAR">Celular</option>
                     </select>
+                  </div>
+                </div>
+
+                <div className="form-group col-md-3 col-sm-12 ">
+                  <label htmlFor={index}>{`Telefone ${
+                    index === 0 ? '*' : ''
+                  }`}</label>
+                  <div className="group-itens">
+                    <input
+                      type="text"
+                      className="form-control"
+                      disabled={!telefone.tipo}
+                      value={telefone.numeroTelefone}
+                      maxLength={telefone.tipo === 'RESIDENCIAL' ? 14 : 15}
+                      id={index}
+                      placeholder="Numero do telefone"
+                      onChange={(e) =>
+                        handleChangeTelefone(
+                          telefone,
+                          masks.cellphone(e.target.value),
+                          index
+                        )
+                      }
+                    />
                     {index > 0 && (
                       <button
                         type="button"
