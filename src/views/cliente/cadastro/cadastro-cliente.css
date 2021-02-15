@@ -1,0 +1,12 @@
+.buttons-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-add-email {
+  margin-bottom: 3%;
+}
+
+.email-group-itens {
+  display: flex;
+}
