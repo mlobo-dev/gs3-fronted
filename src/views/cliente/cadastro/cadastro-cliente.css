@@ -1,0 +1,12 @@
+.buttons-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-add {
+  margin-bottom: 3%;
+}
+
+.group-itens {
+  display: flex;
+}

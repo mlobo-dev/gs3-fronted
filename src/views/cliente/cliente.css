@@ -1,0 +1,28 @@
+.action-itens {
+  display: flex;
+  justify-content: space-around;
+}
+
+.action-itens a {
+  text-decoration: none;
+  color: black;
+  transition: 0.3s ease-in-out;
+}
+
+.action-itens a:hover {
+  color: #0069d9;
+}
+
+.loading {
+  display: flex;
+  margin: auto;
+}
+
+.btn-cadastro a {
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+}
+
+.btn-cadastro:hover {
+  background-color: #0069d9;
+}
