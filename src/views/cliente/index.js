@@ -63,9 +63,11 @@ function Cliente() {
                   <td>{cliente.endereco.cidade}</td>
                   <td>{cliente.endereco.uf}</td>
                   <td className="action-itens">
-                    <Link to={`clientes/cadastro/${cliente.id}`}>
-                      <i className="fas fa-eye"></i>
-                    </Link>
+                    {perfil !== 'ADMINISTRADOR' && (
+                      <Link to={`clientes/cadastro/${cliente.id}`}>
+                        <i className="fas fa-eye"></i>
+                      </Link>
+                    )}
 
                     {perfil === 'ADMINISTRADOR' && (
                       <>

@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   idUsuario: 1,
-  perfil: 'ADMINISTRADOR',
-  usuarioLogado: true,
+  perfil: null,
+  usuarioLogado: false,
 };
 
 function usuarioReducer(state = INITIAL_STATE, action) {

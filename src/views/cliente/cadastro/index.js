@@ -20,14 +20,19 @@ function CadastroCliente(props) {
   const [bairro, setBairro] = useState();
   const [cidade, setCidade] = useState();
   const [uf, setUf] = useState();
-  const [emails, setEmails] = useState([{ enderecoEmail: '' }]);
+  const [emails, setEmails] = useState([
+    { enderecoEmail: '' },
+    { enderecoEmail: '' },
+  ]);
   const [telefones, setTelefones] = useState([
+    { numeroTelefone: '', tipo: '' },
     { numeroTelefone: '', tipo: '' },
   ]);
 
   const [idCliente, setIdCliente] = useState(props.match.params.id);
   const idUsuario = useSelector((state) => state.idUsuario);
-  const perfil = useSelector((state) => state.perfil);
+  const administrador =
+    useSelector((state) => state.perfil) === 'ADMINISTRADOR';
 
   useEffect(() => {
     carregarCliente();
@@ -207,7 +212,7 @@ function CadastroCliente(props) {
                       handleChangeEmail(e.target.value, index, email)
                     }
                   />
-                  {index > 0 && (
+                  {index > 0 && administrador && (
                     <button
                       type="button"
                       class="btn btn-danger "
@@ -221,13 +226,15 @@ function CadastroCliente(props) {
             );
           })}
         </div>
-        <button
-          type="button"
-          class="btn btn-primary btn-add"
-          onClick={addEmail}
-        >
-          <i class="fas fa-plus-circle"></i>Email
-        </button>
+        {administrador && (
+          <button
+            type="button"
+            class="btn btn-primary btn-add"
+            onClick={addEmail}
+          >
+            <i class="fas fa-plus-circle"></i>Email
+          </button>
+        )}
         <br />
       </>
     );
@@ -283,7 +290,7 @@ function CadastroCliente(props) {
                         )
                       }
                     />
-                    {index > 0 && (
+                    {index > 0 && administrador && (
                       <button
                         type="button"
                         class="btn btn-danger col-xs-12 "
@@ -298,13 +305,16 @@ function CadastroCliente(props) {
             );
           })}
         </div>
-        <button
-          type="button"
-          class="btn btn-primary btn-add"
-          onClick={addTelefone}
-        >
-          <i class="fas fa-plus-circle"></i> Telefone
-        </button>
+        {administrador && (
+          <button
+            type="button"
+            class="btn btn-primary btn-add"
+            onClick={addTelefone}
+          >
+            <i class="fas fa-plus-circle"></i> Telefone
+          </button>
+        )}
+
         <br />
       </>
     );
@@ -423,7 +433,7 @@ function CadastroCliente(props) {
           {renderEmails()}
           {renderTelefones()}
           <div className="buttons-group mt-5">
-            {perfil === 'ADMINISTRADOR' && (
+            {administrador && (
               <button
                 type="button"
                 className="btn btn-secondary mr-2 btn-cadastro"
