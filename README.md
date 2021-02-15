@@ -2,6 +2,11 @@
 
 # Install & Run
 
+## Live Sample
+
+- Disponível para visualização e testes no link http://ec2-52-15-224-227.us-east-2.compute.amazonaws.com:5000/login
+  - usuarios: admin 123456 & user 123456
+
 ## Local Host
 
 - npm install
