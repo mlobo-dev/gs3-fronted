@@ -74,12 +74,14 @@ function CadastroCliente(props) {
         complemento: complemento,
       },
       emails: emails.filter((email) => email.enderecoEmail !== ''),
-      telefones: telefones.map((telefone) => {
-        return {
-          tipo: telefone.tipo,
-          numeroTelefone: masks.cellphoneRemove(telefone.numeroTelefone),
-        };
-      }),
+      telefones: telefones
+        .filter((telefone) => telefone.numeroTelefone !== '')
+        .map((telefone) => {
+          return {
+            tipo: telefone.tipo,
+            numeroTelefone: masks.cellphoneRemove(telefone.numeroTelefone),
+          };
+        }),
       usuario: { id: idUsuario },
     };
 

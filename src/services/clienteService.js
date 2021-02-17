@@ -73,14 +73,19 @@ export function validar(cliente) {
     erros.push('O campo cep é obrigatório');
   }
 
+  debugger;
   if (
-    !cliente.emails &&
+    !cliente.emails ||
     cliente.emails.filter((email) => email.enderecoEmail !== '').length < 1
   ) {
     erros.push('Ao menos 1 email deve ser informado');
   }
 
-  if (!cliente.telefones) {
+  if (
+    !cliente.telefones ||
+    cliente.telefones.filter((telefone) => telefone.numeroTelefone !== '')
+      .length < 1
+  ) {
     erros.push('Ao menos 1 telefone deve ser informado');
   }
 
